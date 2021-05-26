@@ -1,7 +1,6 @@
 import os
 import discord
 import requests
-import json
 import random
 import copy
 from replit import db
@@ -27,7 +26,7 @@ if "responding" not in db.keys():
 
 def get_quote():
   response = requests.get("https://zenquotes.io/api/random")
-  json_data = json.loads(response.text)
+  json_data = response.json()
   quote = f"“{json_data[0]['q']}” -{json_data[0]['a']}"
   return quote
 
@@ -74,7 +73,6 @@ async def on_command_error(ctx, error):
 
 @client.event
 async def on_message(message):
-
   author = message.author
   content = message.content
 
@@ -221,7 +219,7 @@ async def load(ctx, extension):
 async def unload(ctx, extension):
   client.unload_extension(f"cogs.{extension}") 
 
-@client.command()
+@client.command(aliases=['update'])
 async def reload(ctx, extension):
   client.unload_extension(f"cogs.{extension}") 
   client.load_extension(f"cogs.{extension}") 
