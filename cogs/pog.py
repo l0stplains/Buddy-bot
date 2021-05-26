@@ -10,5 +10,10 @@ class Pog(commands.Cog):
   async def pog(self,ctx):
     await ctx.send("POG!")
 
+  @commands.command(brief="SHEEESH")
+  async def sheesh(self, ctx):
+    await ctx.send("SHEESH :cold_face:")
+  
+
 def setup(client):
   client.add_cog(Pog(client))
