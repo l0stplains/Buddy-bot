@@ -1,9 +1,6 @@
 import os
 import discord
-import requests
 import random
-import copy
-from datetime import datetime
 from replit import db
 from discord import Embed
 from discord.ext import commands, tasks
@@ -13,12 +10,10 @@ from itertools import cycle
 intents = discord.Intents(messages = True, guilds = True, reactions = True, members = True, presences = True)
 client = commands.Bot(command_prefix='!', intents=intents)
 
-sad_words = ["sad", "depressed", "sedih", "depressing"]
-
-status_all = cycle(['You', 'Your future', 'Darkness'])
-
 if "responding" not in db.keys():
   db["responding"] = True
+
+status_all = cycle(['You', 'Your future', 'Darkness'])
 
 @client.event
 async def on_ready():
@@ -29,31 +24,6 @@ async def on_ready():
   await channel.send(embed=embed)
 
 @client.event
-async def on_member_join(member):
-  print(f"{member} has joined a server!")
-  role = discord.utils.get(member.guild.roles, name='Lv.0')
-  await member.add_roles(role)
-  embed = Embed(title=f"Welcome!", description=f"{member.mention} A warm welcome to you to join us!", colour=0xFF8000, timestamp=datetime.utcnow())
-  embed.set_thumbnail(url=member.avatar_url)
-  channel = client.get_channel(int(os.environ['WELCOME']))
-  await channel.send(embed=embed)
-
-@client.event
-async def on_member_remove(member):
-  print(f"{member} has left a server!")
-
-@client.event
-async def on_command_error(ctx, error):
-  if isinstance(error, commands.MissingRequiredArgument):
-    await ctx.send("Please pass in all required arguments.")
-  elif isinstance(error, commands.CommandNotFound):
-    await ctx.send("Invalid command!")
-  elif isinstance(error, commands.ExtensionAlreadyLoaded):
-    print("ExtensionAlreadyLoaded")
-  else:
-    print(f"ERROR: {error}\n On {ctx.channel} channel")
-
-@client.event
 async def on_message(message):
   author = message.author
   content = message.content
@@ -62,7 +32,7 @@ async def on_message(message):
     return
 
   if db["responding"]:
-    if any(word in content.lower() for word in sad_words):
+    if any(word in content.lower() for word in db['sad_words']):
       await message.channel.send(f"<@{author.id}>\n{random.choice(db['encouragements'])}")
   
   await client.process_commands(message)
@@ -84,6 +54,17 @@ async def responding(ctx, *, args="nothing"):
   elif value == "false" or value == "off":
     db["responding"] = False
     await ctx.send("Responding is off")
+
+@client.event
+async def on_command_error(ctx, error):
+  if isinstance(error, commands.MissingRequiredArgument):
+    await ctx.send("Please pass in all required arguments.")
+  elif isinstance(error, commands.CommandNotFound):
+    await ctx.send("Invalid command!")
+  elif isinstance(error, commands.ExtensionAlreadyLoaded):
+    print("ExtensionAlreadyLoaded")
+  else:
+    print(f"ERROR: {error}\n On {ctx.channel} channel")
     
 @client.command()
 async def load(ctx, extension):
@@ -102,7 +83,7 @@ async def update(ctx, extension):
     for file in db['COGS']:
       _reload(ctx, file)
   else:
-    _reload(ctx, extension)
+      _reload(ctx, extension)
 
 @client.command(brief='list of extensions', aliases=['extensions_list'])
 async def extension_list(ctx):
@@ -124,6 +105,7 @@ for filename in os.listdir('./cogs'):
     files.append(filename[:-3])
     client.load_extension(f'cogs.{filename[:-3]}')
   db['COGS'] = files
+
 
 @tasks.loop(minutes=1)
 async def change_status():

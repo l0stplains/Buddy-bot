@@ -32,5 +32,9 @@ class Reddit(commands.Cog):
   async def animals(self, ctx):
     await ctx.send(get_reddit('cute_animals'))
 
+  @commands.command(brief="reddit")
+  async def reddit(self, ctx):
+    await ctx.send(get_reddit('funny'))
+
 def setup(client):
   client.add_cog(Reddit(client))
