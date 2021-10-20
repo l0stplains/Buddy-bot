@@ -67,6 +67,7 @@ def permission(ctx, arg: str):
     return ctx.message.author.guild_permissions.kick_members
   if arg == 'manage_messages':
     return ctx.message.author.guild_permissions.manage_messages
+  return False
 
 
 def setup(client):

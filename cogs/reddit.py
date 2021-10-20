@@ -3,9 +3,18 @@ import requests
 from discord.ext import commands
 
 def get_reddit(r='dankmemes'):
+  """
+  Get a meme url from a subreddit using meme api (github.com/D3vd/Meme_Api)
+  """
+  
   response = requests.get(f"https://meme-api.herokuapp.com/gimme/{r}/1")
   image = response.json();
-  return image['memes'][0]['url']
+  if 'code' not in image.keys():
+    if image['memes'][0]['nsfw'] == True:
+      return f"|| {image['memes'][0]['url']} ||\nNSFW CONTENT!"
+    return image['memes'][0]['url']
+  else:
+    return "ERROR\nMake sure you pass a real subreddit (r/...)"
 
 class Reddit(commands.Cog):
 
@@ -33,8 +42,13 @@ class Reddit(commands.Cog):
     await ctx.send(get_reddit('cute_animals'))
 
   @commands.command(brief="reddit")
-  async def reddit(self, ctx):
-    await ctx.send(get_reddit('funny'))
+  async def reddit(self, ctx, args='funny'):
+    await ctx.send(get_reddit(args))
+
+  @commands.command(brief="Dank Science Memes (5Head)", aliases = ['science', '5headmemes', 'sc'])
+  async def sciencememes(self, ctx):
+    await ctx.send(get_reddit('DankScienceMemes'))
+
 
 def setup(client):
   client.add_cog(Reddit(client))

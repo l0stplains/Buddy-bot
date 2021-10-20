@@ -7,13 +7,14 @@ from discord.ext import commands, tasks
 from keep_alive import keep_alive
 from itertools import cycle
 
+
 intents = discord.Intents(messages = True, guilds = True, reactions = True, members = True, presences = True)
 client = commands.Bot(command_prefix='!', intents=intents)
 
 if "responding" not in db.keys():
   db["responding"] = True
 
-status_all = cycle(['You', 'Your future', 'Darkness'])
+status_all = cycle(['You', 'Your future', 'Darkness']) # Bot status
 
 @client.event
 async def on_ready():
@@ -31,6 +32,7 @@ async def on_message(message):
   if author == client.user:
     return
 
+  # Give encouragement words if any sad words detected
   if db["responding"]:
     if any(word in content.lower() for word in db['sad_words']):
       await message.channel.send(f"<@{author.id}>\n{random.choice(db['encouragements'])}")
@@ -47,6 +49,9 @@ async def on_message_delete(message):
 
 @client.command()
 async def responding(ctx, *, args="nothing"):
+  """
+  A switch to make the bot responds to random message (not a command)
+  """
   value = args.lower()
   if value == "true" or value == "on":
     db["responding"] = True

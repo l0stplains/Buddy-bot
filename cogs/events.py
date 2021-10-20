@@ -13,6 +13,9 @@ class Events(commands.Cog):
 
   @commands.Cog.listener()
   async def on_member_join(self, member):
+    """
+    Gives a new member a role and sends a welcome message
+    """
     await member.send('Welcome 👋')
     role = discord.utils.get(member.guild.roles, name='Lv.0')
     await member.add_roles(role)
