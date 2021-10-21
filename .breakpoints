@@ -1,0 +1,12 @@
+{
+  "files": {
+    "cogs/reddit.py": [
+      {
+        "id": "58a085ce-6d5e-453f-acd8-dd0a53c51ba0",
+        "line": 2,
+        "version": 1220,
+        "index": 15
+      }
+    ]
+  }
+}

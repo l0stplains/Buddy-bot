@@ -106,7 +106,7 @@ def _reload(ctx, extension):
 
 files = []
 for filename in os.listdir('./cogs'):
-  if filename.endswith('.py'):
+  if filename.startswith('cogs'):
     files.append(filename[:-3])
     client.load_extension(f'cogs.{filename[:-3]}')
   db['COGS'] = files
