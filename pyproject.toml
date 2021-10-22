@@ -12,6 +12,8 @@ flask = "1.1.4"
 youtube_dl = "^2021.6.6"
 PyNaCl = "^1.4.0"
 pyttsx3 = "^2.90"
+autopep8 = "^1.5.7"
+black = "^21.9b0"
 
 [tool.poetry.dev-dependencies]
 
