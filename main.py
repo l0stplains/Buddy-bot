@@ -1,30 +1,34 @@
 import os
 import discord
 import random
+
 from replit import db
 from discord import Embed
 from discord.ext import commands, tasks
 from keep_alive import keep_alive
 from itertools import cycle
+from neuralintents import GenericAssistant
 
 
 intents = discord.Intents(
     messages=True, guilds=True, reactions=True, members=True, presences=True
 )
-client = commands.Bot(command_prefix="!", intents=intents)
+client = commands.Bot(command_prefix=db["PREFIX"], intents=intents)
 
-if "responding" not in db.keys():
-    db["responding"] = True
+chatbot = GenericAssistant("intents.json", model_name="test_model")
+chatbot.train_model()
+chatbot.save_model()
 
-status_all = cycle(["You", "Your future", "Darkness"])  # Bot status
+status_all = cycle(db["STATUS"])  # Bot status
 
 
 @client.event
 async def on_ready():
     print(f"We have logged in as {client.user}")
-    channel = client.get_channel(int(os.environ["GENERAL"]))
+    channel = client.get_channel(int(os.environ["BOT_STATUS"]))
     change_status.start()
     embed = Embed(title="Hello world!", description="I'm online!", colour=0x7CFC00)
+    await channel.purge(limit=1)
     await channel.send(embed=embed)
 
 
@@ -36,12 +40,10 @@ async def on_message(message):
     if author == client.user:
         return
 
-    # Give encouragement words if any sad words detected
+    # Give responses
     if db["responding"]:
-        if any(word in content.lower() for word in db["sad_words"]):
-            await message.channel.send(
-                f"<@{author.id}>\n{random.choice(db['encouragements'])}"
-            )
+        response = chatbot.request(content)
+        await message.channel.send(response)
 
     await client.process_commands(message)
 

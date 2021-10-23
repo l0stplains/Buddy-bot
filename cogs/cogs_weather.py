@@ -42,9 +42,7 @@ def get_weather(loc):
     """
     API call to OpenWeatherMap
     """
-    loc = loc.split(" ")
-    loc = [s.capitalize() for s in loc]  # Format the location name
-    loc = " ".join(loc)
+    loc = loc.title()  # Format location name.
 
     responses = requests.get(
         f"https://api.openweathermap.org/data/2.5/weather?q={loc}&appid={os.environ['WEATHER']}&units=metric"

@@ -66,6 +66,24 @@ class Manager(commands.Cog):
         else:
             await ctx.send("Sorry you don't have permission to clear messages.")
 
+    @commands.command(brief="Change servers' bot prefix *need restart")
+    async def prefix(self, ctx, prefix: str):
+        prefix_list = ["!", "/", "?", ">", "<", "$", "&", "*", "%", "-", "~"]
+        if permission(ctx, "manage_messages"):
+            if prefix in prefix_list:
+                db["PREFIX"] = prefix
+                await ctx.send(f"Server prefix has changed to {db['PREFIX']}\nPlease restart the bot.")
+            else:
+                await ctx.send(
+                    f"Please use one of these to use as a prefix\n{prefix_list}"
+                )
+        else:
+            await ctx.send("Sorry you don't have permission to clear messages.")
+
+    @commands.command(brief="Get servers' bot prefix")
+    async def get_prefix(self, ctx):
+        await ctx.send(db["PREFIX"])
+
 
 def permission(ctx, arg: str):
     if arg == "ban_members":

@@ -1,0 +1,36 @@
+
+{"intents": [
+    {"tag": "greeting",
+        "patterns": ["Hi", "What is going on?", "Is anyone there?", "Hello", "Good day", "Halo", "Haloo", "Yoo"],
+        "responses": ["Hello!", "Good to see you again!", "Hi there, how can I help?", "Hi! :smiley:", "Yoo"]
+    },
+    {"tag": "currently",
+        "patterns": ["What are you doing?", "What you doing right now?", "wyd rn?"],
+        "responses": ["Me? Waiting for you to reply, of course!", "Nothing much. Just chillin' :sunglasses:"]
+    },
+    {"tag": "buddy",
+        "patterns": ["What can you do?", "What are you?", "What are your skills"],
+        "responses": ["I am here to help you! :wink:", "I am a discord bot :robot:", "As you can see... I am a bot", "I am your buddy!"]
+    },
+    {"tag": "name",
+        "patterns": ["What is your name?", "Whats your name?", "What's your name?", "your name", "and you?", "who are you?"],
+        "responses": ["My name is Buddy!", "As you can see, i am Buddy!", "Buddy!!!"]
+    },
+    {"tag": "how",
+        "patterns": ["how are you?", "How you feel?", "How are you doing?", "How have you been?", "What's up?", "Whassup?", "How are things going? "],
+        "responses": ["I am fine!", "I feel great!", "Everything is ok!"]
+    },
+    {"tag": "help",
+        "patterns": ["help", "help me", "can you help me", "i am lost", "i am confused"],
+        "responses": ["You can type !help :wink:"]
+    },
+    {"tag": "goodbye",
+        "patterns": ["Good bye", "See you","See you later", "Goodbye", "I am leaving", "Have a good day", "bye", "see ya", "adios", "cya"],
+        "responses": ["Goodbye! :wave: ", "Nooooo :cry:", "Bye bye! :smiley:"]
+    },
+    {"tag": "encourage",
+        "patterns": ["Sad", "I am so sad", "depressed", "sedih", "depressing"],
+        "responses": ["Cheer up!", "I am always here to help you :smiley:", "You are a great person!"]
+    }
+  ]
+}
