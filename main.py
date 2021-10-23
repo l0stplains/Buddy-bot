@@ -41,8 +41,8 @@ async def on_message(message):
         return
 
     # Give responses
-    if db["responding"]:
-        response = chatbot.request(content)
+    if db["responding"] and content[:5] == "chat ":
+        response = chatbot.request(content[5:])
         await message.channel.send(response)
 
     await client.process_commands(message)

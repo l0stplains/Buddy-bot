@@ -2,7 +2,7 @@
 {"intents": [
     {"tag": "greeting",
         "patterns": ["Hi", "What is going on?", "Is anyone there?", "Hello", "Good day", "Halo", "Haloo", "Yoo"],
-        "responses": ["Hello!", "Good to see you again!", "Hi there, how can I help?", "Hi! :smiley:", "Yoo"]
+        "responses": ["Hello!", "Good to see you again!", "Hi there, how can I help?", "Hi! :smiley:"]
     },
     {"tag": "currently",
         "patterns": ["What are you doing?", "What you doing right now?", "wyd rn?"],
