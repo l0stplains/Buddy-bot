@@ -41,7 +41,7 @@ async def on_message(message):
         return
 
     # Give responses
-    if db["responding"] and content[:5] == "chat ":
+    if db["responding"] and content.lower().startswith("buddy "):
         response = chatbot.request(content[5:])
         await message.channel.send(response)
 
