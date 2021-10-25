@@ -1,12 +1,7 @@
-# Machine learning
 *.pkl
 *.h5
-
-# Cache
 __pycache__
 .breakpoints
-
-# Package / environment setup
 poetry.lock
 pyproject.toml
 python3

@@ -50,20 +50,33 @@ def get_weather(loc):
     weather = responses.json()
     if weather["cod"] == 200:
         status = weather["weather"][0]["main"]
+        description = weather["weather"][0]["description"].capitalize()
+        icon_id = weather["weather"][0]["icon"]
+        icon_url = f"http://openweathermap.org/img/w/{icon_id}.png"
         status, color = get_icon(status)
 
-        text = f"""
-    Temperature: {weather['main']['temp']} °C
+        temperature_desc = f"""
+    Feels like: {weather['main']['feels_like']} °C
     Humidity: {weather['main']['humidity']}%
-    Wind Speed: {weather['wind']['speed']} km/h
     
     """
         embed = Embed(
-            title=f"{loc} Weather Report!\n\n{status}",
-            description=text,
+            title=f"{loc} Weather Report!",
             colour=color,
             timestamp=datetime.utcnow(),
         )
+        embed.add_field(
+            name=f"Status: {status}", value=f"Description: {description}", inline=False
+        )
+        embed.add_field(
+            name=f"Temperature: {weather['main']['temp']} °C  ", value=temperature_desc, inline=True
+        )
+        embed.add_field(
+            name=f"Wind Speed: {weather['wind']['speed']} km/h  ",
+            value=f"Direction: {weather['wind']['deg']} °",
+            inline=True,
+        )
+        embed.set_thumbnail(url=icon_url)
 
         return embed
 
@@ -77,13 +90,13 @@ def get_weather(loc):
 
 def get_icon(status):
     if status == "Clouds":
-        return ("Status: Cloudy :cloud:", 0xC2C2C2)
+        return ("Cloudy :cloud:", 0x9E9E9E)
     elif status == "Haze":
-        return ("Status: Haze :cloud: :cloud: :cloud: :mask:", 0x81B594)
+        return ("Haze :cloud: :cloud: :cloud: :mask:", 0x81B594)
     elif status == "Rain":
-        return ("Status: Rainy :cloud_rain: :umbrella: ", 0x76C9DE)
+        return ("Rainy :cloud_rain: :umbrella: ", 0x00CCFF)
     elif status == "Clear":
-        return ("Status: Clear :partly_sunny: :sunglasses: ", 0xFF8000)
+        return ("Clear :partly_sunny: :sunglasses: ", 0xFF8000)
     return (":cloud:", 0xCFCFCF)
 
 

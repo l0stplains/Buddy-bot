@@ -72,7 +72,9 @@ class Manager(commands.Cog):
         if permission(ctx, "manage_messages"):
             if prefix in prefix_list:
                 db["PREFIX"] = prefix
-                await ctx.send(f"Server prefix has changed to {db['PREFIX']}\nPlease restart the bot.")
+                await ctx.send(
+                    f"Server prefix has changed to {db['PREFIX']}\nPlease restart the bot."
+                )
             else:
                 await ctx.send(
                     f"Please use one of these to use as a prefix\n{prefix_list}"
