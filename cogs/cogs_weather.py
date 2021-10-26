@@ -24,8 +24,8 @@ class Weather(commands.Cog):
         """
         channel = self.client.get_channel(int(os.environ["WEATHER_UPDATE"]))
         if channel != None:
-            if db["COUNTER"] == 24:
-                await channel.purge(limit=23)
+            if db["COUNTER"] >= 24:
+                await channel.purge(limit=db["COUNTER"])
                 db["COUNTER"] = 0
             await channel.send(embed=get_weather(db["WEATHER_LOCATION"]))
             db["COUNTER"] += 1
@@ -57,7 +57,8 @@ def get_weather(loc):
 
         temperature_desc = f"""
     Feels like: {weather['main']['feels_like']} °C
-    Humidity: {weather['main']['humidity']}%
+    Temp min: {weather['main']['temp_min']} °C
+    Temp max: {weather['main']['temp_max']} °C
     
     """
         embed = Embed(
@@ -66,14 +67,19 @@ def get_weather(loc):
             timestamp=datetime.utcnow(),
         )
         embed.add_field(
-            name=f"Status: {status}", value=f"Description: {description}", inline=False
+            name=f"ㅤ\nStatus: {status}", value=f"Description: {description}", inline=False
         )
         embed.add_field(
-            name=f"Temperature: {weather['main']['temp']} °C  ", value=temperature_desc, inline=True
+            name=f"ㅤ\nTemperature: {weather['main']['temp']} °C", value=temperature_desc, inline=True
         )
         embed.add_field(
-            name=f"Wind Speed: {weather['wind']['speed']} km/h  ",
+            name=f"ㅤ\nWind Speed: {weather['wind']['speed']} km/h",
             value=f"Direction: {weather['wind']['deg']} °",
+            inline=True,
+        )
+        embed.add_field(
+            name=f"ㅤ\nHumidity: {weather['main']['humidity']}%",
+            value=f"Pressure: {weather['main']['pressure']} mb",
             inline=True,
         )
         embed.set_thumbnail(url=icon_url)
@@ -97,6 +103,8 @@ def get_icon(status):
         return ("Rainy :cloud_rain: :umbrella: ", 0x00CCFF)
     elif status == "Clear":
         return ("Clear :partly_sunny: :sunglasses: ", 0xFF8000)
+    elif status == "Thunderstorm":
+        return("Thunderstorm! :cloud_lightning: ", 0x413DFF)
     return (":cloud:", 0xCFCFCF)
 
 
